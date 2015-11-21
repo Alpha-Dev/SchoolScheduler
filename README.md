@@ -5,3 +5,4 @@ Allow organizations to manage their user's calender automatically through client
 User downloads thrid or first party client. The client checks and revieves new calender updates and announcents broadcasted to the users of a group. The group is managed on a server and has a dashboard to manage, and send messages to their users.
 
 ## Design & Structure
+Groups and their dashboards are hosted on a seperate dashboard. Dashboards make edits to something similar to an RSS feed. Clients parse the feed into pretty things.

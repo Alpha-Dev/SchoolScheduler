@@ -6,7 +6,7 @@
       // Developer Console, https://console.developers.google.com
       var CLIENT_ID = '936634867807-n297ujkst77k3kl9g4jgssp6e3s3bc1n.apps.googleusercontent.com';
 
-      var SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
+      var SCOPES = ['https://www.googleapis.com/auth/drive'];
 
       /**
        * Check if current user has authorized this application.
@@ -54,42 +54,47 @@
        * Load Drive API client library.
        */
       function loadDriveApi() {
-        gapi.client.load('drive', 'v2', listFiles);
+        console.log("Loading the Google Drive API");
+        gapi.client.load('drive', 'v2', insertNewCalender());
       }
 
-      /**
-       * Print files.
-       */
-      function listFiles() {
-        var request = gapi.client.drive.files.list({
-            'maxResults': 10
+      function insertNewCalender() {
+          const boundary = '-------314159265358979323846264';
+          const delimiter = "\r\n--" + boundary + "\r\n";
+          const close_delim = "\r\n--" + boundary + "--";
+          var emptyCalData = {
+            number: 12,
+            text: 'this is a test json'
+          };
+          var fileName = 'cal-DO_NOT-TOUCH.json';
+          var contentType = 'application/json';
+          var metadata = {
+            'title': fileName,
+            'mimeType': contentType
+          };
+          var base64Data = btoa(JSON.stringify(emptyCalData));
+          var multipartRequestBody =
+              delimiter +
+              'Content-Type: application/json\r\n\r\n' +
+              JSON.stringify(metadata) +
+              delimiter +
+              'Content-Type: ' + contentType + '\r\n' +
+              'Content-Transfer-Encoding: base64\r\n' +
+              '\r\n' +
+              base64Data +
+              close_delim;
+          var request = gapi.client.request({
+              'path': '/upload/drive/v2/files',
+              'method': 'POST',
+              'params': {'uploadType': 'multipart'},
+              'headers': {
+                'Content-Type': 'multipart/mixed; boundary="' + boundary + '"'
+              },
+              'body': multipartRequestBody});
+          request.execute(function(arg) {
+            console.log("A new calender has been inserted");
           });
-
-          request.execute(function(resp) {
-            appendPre('Files:');
-            var files = resp.items;
-            if (files && files.length > 0) {
-              for (var i = 0; i < files.length; i++) {
-                var file = files[i];
-                appendPre(file.title + ' (' + file.id + ')');
-              }
-            } else {
-              appendPre('No files found.');
-            }
-          });
-      }
-
-      /**
-       * Append a pre element to the body containing the given message
-       * as its text node.
-       *
-       * @param {string} message Text to be placed in pre element.
-       */
-      function appendPre(message) {
-        var pre = document.getElementById('output');
-        var textContent = document.createTextNode(message + '\n');
-        pre.appendChild(textContent);
-      }
+        }
 
     </script>
     <script src="https://apis.google.com/js/client.js?onload=checkAuth">

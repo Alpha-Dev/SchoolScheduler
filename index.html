@@ -2,15 +2,33 @@
 <html>
   <head>
     <script type="text/javascript">
-      // Your Client ID can be retrieved from your project in the Google
-      // Developer Console, https://console.developers.google.com
+
+      var blankCalTemplate =
+      {"group": "TestGroup",
+        "groupDescription": "This is a TestGroup",
+        "events": []
+      };
+
       var CLIENT_ID = '936634867807-n297ujkst77k3kl9g4jgssp6e3s3bc1n.apps.googleusercontent.com';
 
       var SCOPES = ['https://www.googleapis.com/auth/drive'];
 
-      /**
-       * Check if current user has authorized this application.
-       */
+      var calCall;
+
+      var passCalCall;
+
+      init(function(qs){
+        qs(blankCalTemplate);
+      });
+
+      //callbackOnNewCalender - called when a new calender is needed, for UI purposes
+      //callbackOnCalenderRecieved - called when a calender is recieved
+      function init(callbackOnNewCalender, callbackOnCalenderRecieved){
+        callCall = callbackOnNewCalender;
+      }
+
+
+      //Double check to see if the user is still authorized
       function checkAuth() {
         gapi.auth.authorize(
           {
@@ -20,11 +38,7 @@
           }, handleAuthResult);
       }
 
-      /**
-       * Handle response from authorization server.
-       *
-       * @param {Object} authResult Authorization result.
-       */
+      //Callback for authorization
       function handleAuthResult(authResult) {
         var authorizeDiv = document.getElementById('authorize-div');
         if (authResult && !authResult.error) {
@@ -38,11 +52,7 @@
         }
       }
 
-      /**
-       * Initiate auth flow in response to user clicking authorize button.
-       *
-       * @param {Event} event Button click event.
-       */
+      //Called when the authorize butotn is clicked
       function handleAuthClick(event) {
         gapi.auth.authorize(
           {client_id: CLIENT_ID, scope: SCOPES, immediate: false},
@@ -50,29 +60,68 @@
         return false;
       }
 
-      /**
-       * Load Drive API client library.
-       */
-      function loadDriveApi() {
-        console.log("Loading the Google Drive API");
-        gapi.client.load('drive', 'v2', insertNewCalender());
+      function makeFilePublic(fileId){
+        var resource = {
+          'value': 'default',
+          'type': 'anyone',
+          'role': 'reader'
+        };
+        var request = gapi.client.drive.permissions.insert({
+          'fileId': fileId,
+          'resource': resource
+        }).execute(function() {
+          console.log("Calender has been set to public");
+        });
       }
 
+      //Called when the authorization finally finishes
+      function loadDriveApi() {
+        console.log("Loading the Google Drive API");
+        gapi.client.load('drive', 'v2', handleInit);
+      }
+
+      //Callback for when the drive API is initialized
+      function handleInit(){
+        //Check for file
+        //TODO: Add cookies so this doesn't have to perform every time
+        //If exists skip
+        gapi.client.drive.children.list({
+          folderId: "root",
+          'q' : "title = 'cal-DO_NOT-TOUCH-AJISDBHO7N8388Y8OCYAYA8DGwdonasycD8ASD.json' and trashed = false"
+        }).execute(function(resp){
+          console.log(resp);
+          var files = resp.items;
+          console.log(files.length);
+          if (files.length >= 1) {
+              console.log("No need to make new calender");
+            } else {
+              console.log("Making a new calender");
+              //If not make new calender
+              insertNewCalender();
+            }
+        });
+      }
+
+      //function addEvent();
+      //function removeEvent();
+      //function readCal();
+      //function deleteAllCalender();
+
+      //TODO: should not insert if the file already exists
+      //Inserts a new calender
       function insertNewCalender() {
+          callCall(setCalTemplate);
+
           const boundary = '-------314159265358979323846264';
           const delimiter = "\r\n--" + boundary + "\r\n";
           const close_delim = "\r\n--" + boundary + "--";
-          var emptyCalData = {
-            number: 12,
-            text: 'this is a test json'
-          };
-          var fileName = 'cal-DO_NOT-TOUCH.json';
+          var fileName = 'cal-DO_NOT-TOUCH-AJISDBHO7N8388Y8OCYAYA8DGwdonasycD8ASD.json';
           var contentType = 'application/json';
           var metadata = {
             'title': fileName,
             'mimeType': contentType
           };
-          var base64Data = btoa(JSON.stringify(emptyCalData));
+          var base64Data = btoa(JSON.stringify(blankCalTemplate));
           var multipartRequestBody =
               delimiter +
               'Content-Type: application/json\r\n\r\n' +
@@ -91,10 +140,23 @@
                 'Content-Type': 'multipart/mixed; boundary="' + boundary + '"'
               },
               'body': multipartRequestBody});
+
           request.execute(function(arg) {
             console.log("A new calender has been inserted");
+
+            gapi.client.drive.children.list({
+              folderId: "root",
+              'q' : "title = 'cal-DO_NOT-TOUCH-AJISDBHO7N8388Y8OCYAYA8DGwdonasycD8ASD.json' and trashed = false"
+            }).execute(function(resp){
+              console.log(resp.items[0].id);
+              makeFilePublic(resp.items[0].id);
+            });
           });
         }
+
+      function setCalTemplate(calJSON){
+        blankCalTemplate = calJSON;
+      }
 
     </script>
     <script src="https://apis.google.com/js/client.js?onload=checkAuth">

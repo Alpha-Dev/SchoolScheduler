@@ -25,10 +25,9 @@
 
   //callbackOnNewCalender - called when a new calender is needed, for UI purposes
   //callbackOnCalenderRecieved - called when a calender is recieved, passes fileID to the callback
-  function init(callbackOnNewCalendar, callbackOnCalendarRecieved, authorizeCall){
+  function init(callbackOnNewCalendar, callbackOnCalendarRecieved){
     calCall = callbackOnNewCalendar;
     passCalCall = callbackOnCalendarRecieved;
-    authCall = authorizeCall;
   }
 
 

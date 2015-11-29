@@ -1,5 +1,6 @@
 var calJSON;
 
+var blankTemp;
 $(function() {
   debug("Script running");
   //Init the interface
@@ -20,13 +21,29 @@ function newCalCall(){
   var name = prompt("Calendar Name");
   var desc = prompt("Calendar Description");
   var auth = prompt("Calendar Author");
-  insertNewCalendar();
+  blankTemp =
+  {"group": name,
+    "groupDescription": desc,
+    "groupAuthor": auth,
+    "events": []
+  };
+  insertNewCalendar(blankTemp);
   debug("Generating sequence finished");
 }
 
 function uiInit(fileId){
-  var fId = fileId;
-  debug(" is HERE");
+  //Gets the raw file content asyncly
+    var fId = fileId;
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
+        calJson = JSON.parse(xhttp.responseText);
+        debug("Calendar fetched");
+        console.log(calJson);
+    }
+    };
+    xhttp.open("GET", "https://googledrive.com/host/" + fileId, true);
+    xhttp.send();
 }
 
 function submitCal(){

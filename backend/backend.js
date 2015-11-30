@@ -118,7 +118,7 @@
       'title': fileName,
       'mimeType': contentType
     };
-    var base64Data = btoa(value);
+    var base64Data = btoa(JSON.stringify(value));
     var multipartRequestBody =
         delimiter +
         'Content-Type: application/json\r\n\r\n' +

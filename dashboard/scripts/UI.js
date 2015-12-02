@@ -14,55 +14,84 @@ $(function() {
   });
 });
 
+var date = new Date();
 
+//TODO : support calendar as the years progress, etc.
 function newCalCall(){
   //TODO : Make an actual form
   debug("Generating new calendar");
   var name = prompt("Calendar Name");
   var desc = prompt("Calendar Description");
   var auth = prompt("Calendar Author");
-  blankTemp =
+  //HACK: lul should not be using the message boxes
+
+
+  var year = date.getFullYear();
+  var month = date.getMonth()
+
+  //Self explanitory, however 'calendar' has a json, of a json, of a json,
+  Blanktemp =
   {"group": name,
     "groupDescription": desc,
     "groupAuthor": auth,
-    "events": []
+    "calendar":{}
   };
+  blankTemp["calendar"][year] =  {};
+  //Empty events array
+  blankTemp["calendar"][year][month + 1] = {};
+
+  //insert calendar with a template, check the documentation on backend.js for
+  //more info
   insertNewCalendar(blankTemp);
   debug("Generating sequence finished");
 }
 
-function addEvent(name, desc, timestart, timeend, miscJSON){
+function addEvent(name, desc, timestart, timeend, miscJSON, year, month, dayOfMonth){
   var eventJson = {
     "eventId": generateUUID(),
     "eventName": name,
     "eventDesc": desc,
     "eventStart": timestart,
     "timeend": timeend,
+    //Data for stuff that hasn't been implmentated yet or planned for in the future
     "miscData": miscJSON
   };
-    calJSON["events"].push(eventJson);
+
+    if(typeof calJSON["calendar"][year] === 'undefined'){
+      calJSON["calendar"][year] = {};
+    }
+
+    if(typeof calJSON["calendar"][year][month] === 'undefined'){
+      calJSON["calendar"][year][month] = {};
+    }
+
+    if(typeof calJSON["calendar"][year][month][dayOfMonth] === 'undefined'){
+      calJSON["calendar"][year][month][dayOfMonth] = [];
+    }
+
+    calJSON["calendar"][year][month][dayOfMonth].push(eventJson);
+
     submitCal();
 }
 
-function removeEvent(UUID){
+var eDebug;
 
-  var events = calJSON["events"];
+function removeEvent(year, month, dayOfMonth, UUID){
+
+  var events = calJSON["calendar"][year][month][dayOfMonth];
 
   for(var i = 0; i < events.length; i++)
   {
-    console.log(events[i].eventId);
     if(events[i].eventId == UUID)
     {
-      console.log(events.splice(i, 1));
-      events = events.splice(i, 1);
-      console.log(events);
-      calJSON["events"] = events;
-      console.log(calJSON);
+      events.splice(i, 1);
+      calJSON["calendar"][year][month][dayOfMonth] = events;
       submitCal();
       break;
     }
   }
 }
+
 
 function generateUUID() {
     var d = new Date().getTime();
@@ -90,7 +119,7 @@ function uiInit(fileId){
 }
 
 function submitCal(){
-  console.log("CALL : " + JSON.stringify(calJSON));
+  console.log("CALENDAR CALL = " + JSON.stringify(calJSON));
   updateCalendar(calJSON,fId);
 }
 

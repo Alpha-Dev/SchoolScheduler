@@ -82,6 +82,8 @@
   function loadDriveApi() {
     console.log("Loading the Google Drive API");
     gapi.client.load('drive', 'v2', handleInit);
+    console.log("Loading the Google URL Shortner");
+    gapi.client.load('urlshortener', 'v1');
   }
 
   //Callback for when the drive API is initialized
@@ -104,6 +106,15 @@
           console.log("Making a new calendar");
           calCall();
         }
+    });
+  }
+
+  function generateGroupID(url, callback){
+    var request = gapi.client.urlshortener.url.post({
+      'longUrl': url
+    });
+    request.then(function(response) {
+      callback(reponse.id);
     });
   }
 

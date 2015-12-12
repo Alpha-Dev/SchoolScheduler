@@ -1,7 +1,7 @@
 var calJSON;
 var fId;
 var blankTemp;
-$(function() {
+$(window).load(function(){
 
   Array.prototype.max = function () {
       return Math.max.apply(Math, this);
@@ -105,6 +105,7 @@ function removeEvent(year, month, dayOfMonth, UUID){
 function setAboutValues(title, desc, owner, id){
   if(title != null)
     $(".title").text(title);
+    $(".title1").text(title);
   if(desc != null)
     $(".desc").text(desc);
   if(owner != null)

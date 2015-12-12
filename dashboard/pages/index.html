@@ -40,7 +40,7 @@
 
 </head>
 
-<body>
+<body style="overflow-x: hidden;">
 
     <div id="wrapper">
 
@@ -92,9 +92,9 @@
                     <div class="panel panel-primary">
                         <div class="panel-heading">
                             <div class="row">
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge" id="eventsadded">0</div>
-                                    <div>Events Added</div>
+                                <div class="col-xs-9 text-left">
+                                    <div class="huge">Title</div>
+                                    <div class="title">No Value</div>
                                 </div>
                             </div>
                         </div>
@@ -104,9 +104,9 @@
                     <div class="panel panel-green">
                         <div class="panel-heading">
                             <div class="row">
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">0</div>
-                                    <div>Active Events</div>
+                                <div class="col-xs-9 text-left">
+                                    <div class="huge">Description</div>
+                                    <div class="desc">No Value</div>
                                 </div>
                             </div>
                         </div>
@@ -116,9 +116,9 @@
                     <div class="panel panel-yellow">
                         <div class="panel-heading">
                             <div class="row">
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">0</div>
-                                    <div>Events Passed</div>
+                                <div class="col-xs-9 text-left">
+                                    <div class="huge">Owner</div>
+                                    <div class="owner">No Value</div>
                                 </div>
                             </div>
                         </div>
@@ -128,9 +128,9 @@
                     <div class="panel panel-red">
                         <div class="panel-heading">
                             <div class="row">
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">0</div>
-                                    <div>Calendar Requests</div>
+                                <div class="col-xs-9 text-left">
+                                    <div class="huge">Group ID</div>
+                                    <div class="id">No Value</div>
                                 </div>
                             </div>
                         </div>
@@ -159,34 +159,29 @@
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="list-group">
-                              <a href="#" class="list-group-item">
+                              <a href="#" class="list-group-item" onclick="setTitle()">
                                   Calendar Title
-                                  <span class="pull-right text-muted small"><em>No Value</em>
+                                  <span class="pull-right text-muted small" class="title"><em>No Value</em>
                                   </span>
                               </a>
-                                <a href="#" class="list-group-item">
+                                <a href="#" class="list-group-item" onclick="setDesc()">
                                     Calendar Description
-                                    <span class="pull-right text-muted small"><em>No Value</em>
+                                    <span class="pull-right text-muted small" class="desc"><em>No Value</em>
                                     </span>
                                 </a>
-                                <a href="#" class="list-group-item">
+                                <a href="#" class="list-group-item" onclick="setOwner()">
                                     Calendar Owner
-                                    <span class="pull-right text-muted small"><em>No Value</em>
+                                    <span class="pull-right text-muted small" class="owner"><em>No Value</em>
                                     </span>
                                 </a>
                                 <a href="#" class="list-group-item">
                                     Calendar ID
-                                    <span class="pull-right text-muted small"><em>No Value</em>
-                                    </span>
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    Calendar Age
-                                    <span class="pull-right text-muted small"><em>No Value</em>
+                                    <span class="pull-right text-muted small" class="id"><em>No Value</em>
                                     </span>
                                 </a>
                             </div>
                             <!-- /.list-group -->
-                            <a href="#" class="btn btn-default btn-block">Save Changes</a>
+                            <a href="#" class="btn btn-default btn-block" onclick="saveAboutCal()">Save Changes</a>
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -195,50 +190,6 @@
                         <!-- /.panel-footer -->
                     </div>
 
-                    <div class="col-lg-4">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <i class="fa fa-bell fa-fw"></i>Recent Events
-                            </div>
-                            <!-- /.panel-heading -->
-                            <div class="panel-body">
-                                <div class="list-group">
-                                  <a href="#" class="list-group-item">
-                                      Calendar Title
-                                      <span class="pull-right text-muted small"><em>No Value</em>
-                                      </span>
-                                  </a>
-                                    <a href="#" class="list-group-item">
-                                        Calendar Description
-                                        <span class="pull-right text-muted small"><em>No Value</em>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        Calendar Owner
-                                        <span class="pull-right text-muted small"><em>No Value</em>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        Calendar ID
-                                        <span class="pull-right text-muted small"><em>No Value</em>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="list-group-item">
-                                        Calendar Age
-                                        <span class="pull-right text-muted small"><em>No Value</em>
-                                        </span>
-                                    </a>
-                                </div>
-                                <!-- /.list-group -->
-                                <a href="#" class="btn btn-default btn-block">Save Changes</a>
-                            </div>
-                            <!-- /.panel-body -->
-                        </div>
-                        <!-- /.panel -->
-                        <!-- /.panel -->
-                            <!-- /.panel-footer -->
-                        </div>
-
                         <div class="col-lg-4">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -246,10 +197,10 @@
                                 </div>
                                 <!-- /.panel-heading -->
                                 <div class="panel-body">
-                                    <a href="#" class="btn btn-default btn-block">Add Event</a>
+                                    <a class="btn btn-default btn-block" onclick="addNewEvent()">Add Event</a>
                                     <!-- /.list-group -->
-                                    <a href="#" class="btn btn-default btn-block">Remove Event</a>
-                                    <a href="#" class="btn btn-default btn-block">Edit Event</a>
+                                    <a class="btn btn-default btn-block">Remove Event</a>
+                                    <a class="btn btn-default btn-block">Edit Event</a>
                                 </div>
                                 <!-- /.panel-body -->
                             </div>
@@ -257,6 +208,37 @@
                             <!-- /.panel -->
                                 <!-- /.panel-footer -->
                             </div>
+
+                            <div class="col-lg-4">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <i class="fa fa-bell fa-fw"></i> About Linkus
+                                    </div>
+                                    <!-- /.panel-heading -->
+                                    <div class="panel-body" style="font-size: 20px">
+                                        Linkus-Dashboard is written in Javascript, CSS, and HTML
+                                      </br>
+                                    </br>
+
+                                        The dashboard is based heavily off this Bootstrap template
+                                        <a href="http://startbootstrap.com/template-categories/admin-dashboard/"> Bootstrap Template</a>
+                                      </br>
+                                    </br>
+
+                                        Linkus-Dashboard also utilizes the Google Drive API, the Google URL shortner API, and the Google Accounts API.
+                                        And includes libraries and frameworks such as jQuery, Twitter Bootstrap, and Bower for dependcy management
+                                      </br>
+                                    </br>
+
+                                        The version of Linkus-Dashboard you are using is an Alpha Build
+
+                                    </div>
+                                    <!-- /.panel-body -->
+                                </div>
+                                <!-- /.panel -->
+                                <!-- /.panel -->
+                                    <!-- /.panel-footer -->
+                                </div>
                     <!-- /.panel .chat-panel -->
                 </div>
                 <!-- /.col-lg-4 -->

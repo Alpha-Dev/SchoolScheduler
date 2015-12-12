@@ -10,6 +10,8 @@ body {
 
 #wrapper {
     width: 100%;
+    padding-left: 25px;
+    padding-right: 25px;
 }
 
 #page-wrapper {
@@ -296,7 +298,11 @@ table.dataTable thead .sorting:after {
 }
 
 .huge {
-    font-size: 40px;
+    border-bottom: 1px solid #fff;
+    padding-bottom: 1px;
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 4px;
 }
 
 .panel-green {

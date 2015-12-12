@@ -104,13 +104,13 @@ function removeEvent(year, month, dayOfMonth, UUID){
 
 function setAboutValues(title, desc, owner, id){
   if(title != null)
-    $("#title").text(title);
+    $(".title").text(title);
   if(desc != null)
-    $("#desc").text(desc);
+    $(".desc").text(desc);
   if(owner != null)
-    $("#owner").text(owner);
+    $(".owner").text(owner);
   if(id != null)
-    $("#id").text(id);
+    $(".id").text(id);
 }
 
 function generateUUID() {
@@ -142,12 +142,13 @@ function uiInit(fileId){
     xhttp.send();
 }
 
-function addNewEvent(){
-  var n = prompt("Enter event name");
-  var d = prompt("Enter event description");
-  var time = prompt("Enter event start time in either format [hh:mm] or [hh:mm am/pm]");
-  var timeE = prompt("Enter event end time in either format [hh:mm] or [hh:mm am/pm]");
-  var date = prompt("Enter the event date [in format mm:dd:yyyy]");
+function addNewEvent(name, description, timeStart, timeEnd, date){
+
+  //var n = prompt("Enter event name");
+  //var d = prompt("Enter event description");
+  //var time = prompt("Enter event start time in either format [hh:mm] or [hh:mm am/pm]");
+  //var timeE = prompt("Enter event end time in either format [hh:mm] or [hh:mm am/pm]");
+  //var date = prompt("Enter the event date [in format mm:dd:yyyy]");
 
   var parseDate = new Date(date);
   var start = parseTime(time);

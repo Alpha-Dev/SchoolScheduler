@@ -40,20 +40,38 @@ function newCalCall(){
   var month = date.getMonth()
 
   //Self explanitory, however 'calendar' has a json, of a json, of a json,
-  Blanktemp =
+  blankTemp =
   {"group": name,
     "groupDescription": desc,
     "groupAuthor": auth,
+    "groupID": "[unset]",
     "calendar":{}
   };
   blankTemp["calendar"][year] =  {};
   //Empty events array
   blankTemp["calendar"][year][month + 1] = {};
 
-  //insert calendar with a template, check the documentation on backend.js for
-  //more info
-  insertNewCalendar(blankTemp);
-  debug("Generating sequence finished");
+  calJSON = blankTemp;
+
+    //insert calendar with a template, check the documentation on backend.js for
+    //more info
+    insertNewCalendar(blankTemp, function(fileIDCall){
+      fId = fileIDCall;
+      console.log("Generating group ID");
+      generateGroupID("https://googledrive.com/host/" + fileIDCall, function(err, gid){
+        if(err != null){
+          console.log(err);
+          console.log("There was an error generating the group id");
+          return;
+        }
+        gid = gid.replace("https://goo.gl/", "");
+        calJSON["groupID"] = gid;
+        submitCal();
+        console.log("Calendar ID is : " + gid);
+    });
+    debug("Generating sequence finished");
+  });
+
 }
 
 function addEvent(name, desc, timestart, timeend, miscJSON, year, month, dayOfMonth){
@@ -136,7 +154,7 @@ function uiInit(fileId){
         setAboutValues(calJSON["group"],
           calJSON["groupDescription"],
           calJSON["groupAuthor"],
-          null);
+          calJSON["groupID"]);
       }
     };
     xhttp.open("GET", "https://googledrive.com/host/" + fId, true);

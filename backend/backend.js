@@ -7,7 +7,7 @@
 
   var CLIENT_ID = '936634867807-n297ujkst77k3kl9g4jgssp6e3s3bc1n.apps.googleusercontent.com';
 
-  var SCOPES = ['https://www.googleapis.com/auth/drive'];
+  var SCOPES = ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/urlshortener'];
 
   var calCall;
 
@@ -74,6 +74,7 @@
     }).execute(function() {
       console.log("Calendar has been set to public");
       console.log("Handing script to UI");
+
       passCalCall(fileId);
     });
   }
@@ -99,7 +100,7 @@
       var files = resp.items;
       console.log(files.length);
       if (files.length >= 1) {
-          console.log("No need to make new ");
+          console.log("No need to make new");
           console.log("Handing script to UI");
           passCalCall(resp.items[0].id);
         } else {
@@ -110,11 +111,23 @@
   }
 
   function generateGroupID(url, callback){
-    var request = gapi.client.urlshortener.url.post({
+    var request = gapi.client.urlshortener.url.insert({
+    'resource': {
       'longUrl': url
+	}
     });
-    request.then(function(response) {
-      callback(reponse.id);
+    request.execute(function(response)
+	{
+
+		if(response.id != null)
+		{
+			callback(null, response.id);
+		}
+		else
+		{
+			callback("error: creating short url", null);
+		}
+
     });
   }
 
@@ -163,7 +176,8 @@
 
   //TODO: should not insert if the file already exists
   //Inserts a new calender
-  function insertNewCalendar(template) {
+  //Callback executed parallel to the make file public
+  function insertNewCalendar(template, callback) {
 
       const boundary = '-------314159265358979323846264';
       const delimiter = "\r\n--" + boundary + "\r\n";
@@ -201,6 +215,7 @@
           folderId: "root",
           'q' : "title = 'cal-DO_NOT-TOUCH-AJISDBHO7N8388Y8OCYAYA8DGwdonasycD8ASD.json' and trashed = false"
         }).execute(function(resp){
+          callback(resp.items[0].id);
           makeFilePublic(resp.items[0].id);
         });
       });

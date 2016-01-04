@@ -49,13 +49,25 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Event Name</h4>
+          <h4 class="modal-title">Add New Event</h4>
         </div>
         <div class="modal-body">
-          <p>Description</p>
+          <div class="form-group">
+            <label for="usr">Event Name:</label>
+            <input type="text" class="form-control" id="usr">
+            <label for="usr">Event Description:</label>
+            <input type="text" class="form-control" id="usr">
+            <label for="usr">Event Time Start:</label>
+            <input type="text" class="form-control" id="usr">
+            <label for="usr">Event Time End:</label>
+            <input type="text" class="form-control" id="usr">
+            <label for="usr">Event Date:</label>
+            <input type="text" class="form-control" id="usr">
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
         </div>
       </div>
     </div>
@@ -197,7 +209,7 @@
             </div>
             <!-- /.row -->
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-6">
                     <!-- /.panel -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -208,6 +220,40 @@
                     <!-- /.panel -->
                     <!-- /.panel -->
                 </div>
+              </div>
+              <div class="col-lg-6">
+                  <!-- /.panel -->
+                  <div class="panel panel-default">
+                      <div class="panel-heading">
+                          Upcomming events
+                      </div>
+                      <!-- /.panel-heading -->
+                      <div class="list-group" id="upEvents">
+                        <a href="#" class="list-group-item" onclick="setTitle()">
+                            Calendar Title
+                            <span class="pull-right text-muted small"><em class="title">No Value</em>
+                            </span>
+                        </a>
+                          <a href="#" class="list-group-item" onclick="setDesc()">
+                              Calendar Description
+                              <span class="pull-right text-muted small"><em class="desc">No Value</em>
+                              </span>
+                          </a>
+                          <a href="#" class="list-group-item" onclick="setOwner()">
+                              Calendar Owner
+                              <span class="pull-right text-muted small"><em class="owner">No Value</em>
+                              </span>
+                          </a>
+                          <a href="#" class="list-group-item">
+                              Calendar ID
+                              <span class="pull-right text-muted small"><em class="id">No Value</em>
+                              </span>
+                          </a>
+                      </div>
+                  <!-- /.panel -->
+                  <!-- /.panel -->
+              </div>
+            </div>
                 <!-- /.col-lg-8 -->
                 <div class="col-lg-4">
                     <div class="panel panel-default">

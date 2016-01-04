@@ -259,3 +259,8 @@ function submitCal(){
 function debug(string){
   console.log("UI : " + string);
 }
+
+function loadUpcom(page, year, month){
+ var events = calJSON["calendar"][year][month];
+ $('#upEvents').empty();
+}

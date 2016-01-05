@@ -1,6 +1,9 @@
 var calJSON;
 var fId;
 var blankTemp;
+var month;
+var year;
+
 $(window).load(function(){
 
   Array.prototype.max = function () {
@@ -13,6 +16,8 @@ $(window).load(function(){
 
 
   debug("Script running");
+  month = new Date().getMonth() + 1;
+  year = new Date().getFullYear();
   //Init the interface
   init(newCalCall, uiInit);
   //Attempt the log in and handle errors
@@ -150,6 +155,8 @@ function uiInit(fileId){
     if (xhttp.readyState == 4 && xhttp.status == 200) {
         debug("Calendar fetched");
         calJSON = JSON.parse(xhttp.responseText);
+        //Loads all upcomming events for the month
+        loadUpcom(0,year, month);
         console.log(calJSON);
         setAboutValues(calJSON["group"],
           calJSON["groupDescription"],
@@ -261,10 +268,53 @@ function debug(string){
 }
 
 function loadUpcom(page, year, month){
+  if(typeof calJSON["calendar"][year] === 'undefined'){
+    $('#dateText').text(month + " / " + year);
+    $('#upEvents').empty();
+    $('#upEvents').append('<h2 style="text-align: center;">There are no events for this month</h2>');
+    return;
+  }
  var events = calJSON["calendar"][year][month];
- console.log(events);
+ $('#dateText').text(month + " / " + year);
  $('#upEvents').empty();
- for(var i = 0; i < events.length; i++){
-   $('#upEvents').append('<a href="#" class="list-group-item" eventid="' + events[i].eventId + '"><b>' + events[i].eventName + '</b> |' + events[i].eventDesc + '<span class="pull-right text-muted small"><i>Start - End</i></em></span></a>');
+ console.log("evetns: " + events);
+ if(typeof events === 'undefined'){
+   $('#upEvents').append('<h2 style="text-align: center;">There are no events for this month</h2>');
+   return;
  }
+ var keys = Object.keys(events);
+ console.log(keys);
+ for(var k = 0; k < keys.length; k++){
+ for(var i = 0; i < events[keys[k]].length; i++){
+   $('#upEvents').append('<a href="#" class="list-group-item" eventid="' + events[keys[k]][i].eventId + '"><b>' + events[keys[k]][i].eventName + '</b> |' + events[keys[k]][i].eventDesc + "  " + month + '-' + keys[k] + '-' + year + '<span class="pull-right text-muted small"><i>Start - End</i></em></span></a>');
+ }
+ }
+ console.log(k);
+ console.log(i);
+ if(k == 0){
+   $('#upEvents').append('<h2 style="text-align: center;">There are no events for this month</h2>');
+ }
+}
+
+function goNext(){
+  month += 1;
+  runDateCheck();
+  loadUpcom(0, year, month);
+}
+
+function goBack(){
+  month -= 1;
+  runDateCheck();
+  loadUpcom(0, year, month);
+}
+
+function runDateCheck(){
+  if(month == 13){
+    month = 1;
+    year+=1;
+  }
+  else if(month == 0){
+    month = 12;
+    year-=1;
+  }
 }

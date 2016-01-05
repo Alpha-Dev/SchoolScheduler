@@ -224,13 +224,14 @@
               <div class="col-lg-6">
                   <!-- /.panel -->
                   <div class="panel panel-default">
-                      <div class="panel-heading">
-                          <h1 align="center">Month, YEAR
-                            <button type="button" class="btn btn-primary" style="margin: 2px;"><</button>
-                            <button type="button" class="btn btn-primary" style="margin: 2px;">></button></h1>
+                      <div class="panel-heading" style="position: relative;">
+
+                          <h1 align="center" id="dateText" style="display: inline-block; font-size: 25px;">Month, YEAR</h1>
+                          <button type="button" class="btn btn-primary" style="position:absolute; margin: 2px; right: 50px; top: 20px" onclick="goBack()"><</button>
+                          <button type="button" class="btn btn-primary" style="position:absolute; margin: 2px; right: 10px; top: 20px" onclick="goNext()">></button>
                       </div>
                       <!-- /.panel-heading -->
-                      <div class="list-group" id="upEvents" style="max-height: 400px;overflow-y: auto;">
+                      <div class="list-group" id="upEvents" style="max-height: 275px;min-height: 275px;overflow-y: auto;">
                           <a href="#" class="list-group-item" onclick="setDesc()" eventid="test">
                               <b>This is an event</b> | This is its description bee doop
                               <span class="pull-right text-muted small"><i>Start - End</i></em>

@@ -262,5 +262,9 @@ function debug(string){
 
 function loadUpcom(page, year, month){
  var events = calJSON["calendar"][year][month];
+ console.log(events);
  $('#upEvents').empty();
+ for(var i = 0; i < events.length; i++){
+   $('#upEvents').append('<a href="#" class="list-group-item" eventid="' + events[i].eventId + '"><b>' + events[i].eventName + '</b> |' + events[i].eventDesc + '<span class="pull-right text-muted small"><i>Start - End</i></em></span></a>');
+ }
 }

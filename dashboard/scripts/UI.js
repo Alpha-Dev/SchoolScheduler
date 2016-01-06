@@ -78,7 +78,10 @@ function newCalCall(){
   });
 
 }
+document.getElementById("add_event_submit").addEventListener("click",function(){
+  addNewEvent(document.getElementById("event_name").value,document.getElementById("event_desc").value,document.getElementById("time_start").value,document.getElementById("time_end").value,document.getElementById("event_date").value);
 
+})
 function addEvent(name, desc, timestart, timeend, miscJSON, year, month, dayOfMonth){
   var eventJson = {
     "eventId": generateUUID(),

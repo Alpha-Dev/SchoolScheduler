@@ -137,6 +137,11 @@ function setAboutValues(title, desc, owner, id){
     $(".id").text(id);
 }
 
+function runLogout(){
+  //?continue=
+  document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout";
+}
+
 function generateUUID() {
     var d = new Date().getTime();
     var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -145,6 +150,14 @@ function generateUUID() {
         return (c=='x' ? r : (r&0x3|0x8)).toString(16);
     });
     return uuid;
+}
+
+function test(){
+  $.gDialog.alert("Alert message here.", {
+    title: "Alert Dialog Box",
+    animateIn: "bounceIn",
+    animateOut: "flipOutY"
+  });
 }
 
 function uiInit(fileId){
@@ -286,7 +299,7 @@ function loadUpcom(page, year, month){
  console.log(keys);
  for(var k = 0; k < keys.length; k++){
  for(var i = 0; i < events[keys[k]].length; i++){
-   $('#upEvents').append('<a href="#" class="list-group-item" eventid="' + events[keys[k]][i].eventId + '"><b>' + events[keys[k]][i].eventName + '</b> |' + events[keys[k]][i].eventDesc + "  " + month + '-' + keys[k] + '-' + year + '<span class="pull-right text-muted small"><i>Start - End</i></em></span></a>');
+   $('#upEvents').append('<a href="#" class="list-group-item" dayOf="' + keys[k] + '" eventid="' + events[keys[k]][i].eventId + '"><b>' + events[keys[k]][i].eventName + '</b> |' + events[keys[k]][i].eventDesc + "  " + month + '-' + keys[k] + '-' + year + '<span class="pull-right text-muted small"><i>Start - End</i></em></span></a>');
  }
  }
  console.log(k);

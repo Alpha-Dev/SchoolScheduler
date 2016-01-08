@@ -81,7 +81,13 @@ function newCalCall(){
 document.getElementById("add_event_submit").addEventListener("click",function(){
   addNewEvent(document.getElementById("event_name").value,document.getElementById("event_desc").value,document.getElementById("time_start").value,document.getElementById("time_end").value,document.getElementById("event_date").value);
 
-})
+});
+
+document.getElementById("agree_remove_event").addEventListener("click",function(){
+    console.log("removing event");
+    removeEvent(year, month, dayactive, eventactive);
+});
+
 function addEvent(name, desc, timestart, timeend, miscJSON, year, month, dayOfMonth){
   var eventJson = {
     "eventId": generateUUID(),
@@ -193,8 +199,8 @@ function addNewEvent(name, description, timeStart, timeEnd, date){
   //var date = prompt("Enter the event date [in format mm:dd:yyyy]");
 
   var parseDate = new Date(date);
-  var start = parseTime(time);
-  var end = parseTime(timeE);
+  var start = parseTime(timeStart);
+  var end = parseTime(timeEnd);
 
   if(isNaN(start)){
     alert("The event time stat was entered in an invalid format")
@@ -214,7 +220,7 @@ function addNewEvent(name, description, timeStart, timeEnd, date){
   debug(parseDate.getMonth() + 1);
   debug(parseDate.getDate());
 
-  addEvent(n, d, time, timeE, null, parseDate.getFullYear(), parseDate.getMonth() + 1, parseDate.getDate());
+  addEvent(name, description, start, end, null, parseDate.getFullYear(), parseDate.getMonth() + 1, parseDate.getDate() + 1);
 
 }
 
@@ -302,7 +308,7 @@ function loadUpcom(page, year, month){
  console.log(keys);
  for(var k = 0; k < keys.length; k++){
  for(var i = 0; i < events[keys[k]].length; i++){
-   $('#upEvents').append('<a href="#" class="list-group-item" dayOf="' + keys[k] + '" eventid="' + events[keys[k]][i].eventId + '"><b>' + events[keys[k]][i].eventName + '</b> |' + events[keys[k]][i].eventDesc + "  " + month + '-' + keys[k] + '-' + year + '<span class="pull-right text-muted small"><i>Start - End</i></em></span></a>');
+   $('#upEvents').append('<a href="#" onclick="setActive(this)" class="list-group-item" dayOf="' + keys[k] + '" eventid="' + events[keys[k]][i].eventId + '"><b>' + events[keys[k]][i].eventName + '</b> |' + events[keys[k]][i].eventDesc + "  " + month + '-' + keys[k] + '-' + year + '<span class="pull-right text-muted small"><i>' + events[keys[k]][i].eventStart + ' - ' + events[keys[k]][i].timeend + '</i></em></span></a>');
  }
  }
  console.log(k);
@@ -333,4 +339,40 @@ function runDateCheck(){
     month = 12;
     year-=1;
   }
+}
+
+function addEventInfo(){
+  var activeEventYes;
+  var event = calJSON["calendar"][year][month][dayactive];
+  console.log(event);
+
+  for(var i = 0; i < event.length; i++){
+    if(event[i].eventId === eventactive){
+      activeEventYes = event[i];
+      break;
+    }
+  }
+
+  console.log(activeEventYes);
+
+  $("#modBod").empty();
+  $("#modBod").append("<p>You are removing event '" + activeEventYes["eventName"] + "' </p>");
+  $("#modBod").append("<p>" + activeEventYes["eventDesc"] + "' </p></br>");
+  $("#modBod").append("<p>Event ID : '" + activeEventYes["eventId"] + "' </p></br>");
+  $("#modBod").append("<p><i>" + activeEventYes["eventStart"] + " - " + activeEventYes["timeend"] + " </p>");
+
+}
+
+var dayactive, eventactive;
+function setActive(obj){
+
+  dayactive = parseInt($(obj).attr("dayof"));
+  eventactive = ($(obj).attr("eventid"));
+  $(".highlightAround").removeClass("highlightAround");
+  $(obj).addClass("highlightAround");
+
+  console.log(dayactive)
+  console.log(eventactive)
+
+  console.log(obj);
 }

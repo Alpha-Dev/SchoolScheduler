@@ -44,7 +44,11 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style>
-
+      .highlightAround{
+        border-style: solid;
+        border-color: grey;
+        border-width: 5px !important;
+      }
     </style>
 </head>
 
@@ -86,13 +90,13 @@
   <div class="modal-content">
     <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal">&times;</button>
-      <h4 class="modal-title">Event Name</h4>
+      <h4 class="modal-title">Removing Event</h4>
     </div>
-    <div class="modal-body">
-      <p>Description</p>
+    <div class="modal-body" id="modBod">
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-primary" data-dismiss="modal">Continue</button>
     </div>
   </div>
 </div>
@@ -275,7 +279,7 @@
                                 <div class="panel-body">
                                     <button class="btn btn-default btn-block" data-toggle="modal" data-target="#add_event_modal" onclick="addNewEvent()">Add Event</button>
                                     <!-- /.list-group -->
-                                    <button class="btn btn-default btn-block" data-toggle="modal" data-target="#remove_event_modal" onclick="addNewEvent()">Remove Event</button>
+                                    <button class="btn btn-default btn-block" data-toggle="modal" data-target="#remove_event_modal" onclick="addEventInfo()">Remove Event</button>
                                     <button class="btn btn-default btn-block" data-toggle="modal" data-target="#edit_event_modal" onclick="addNewEvent()">Edit Event</button>
                                 </div>
                                 <!-- /.panel-body -->
